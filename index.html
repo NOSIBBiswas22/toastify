@@ -80,12 +80,12 @@
 
       /* Toast transitions */
       .toast.bounce {
-        animation: bounce 0.3s forwards;
+        animation: bounce 0.5s forwards;
       }
 
       .toast.slide {
-        transform: translateY(-30px);
-        animation: slide 0.3s forwards;
+        transform: translateY(-40px);
+        animation: slide 0.6s forwards;
       }
 
       .toast.zoom {
@@ -95,7 +95,7 @@
 
       .toast.flip {
         transform: rotateY(90deg);
-        animation: flip 0.3s forwards;
+        animation: flip 0.5s forwards;
       }
 
       @keyframes bounce {
@@ -103,7 +103,7 @@
           transform: translateY(-30px);
         }
         50% {
-          transform: translateY(10px);
+          transform: translateY(25px);
         }
         100% {
           transform: translateY(0);
@@ -112,16 +112,22 @@
 
       @keyframes slide {
         0% {
-          transform: translateY(-30px);
+          transform: translateX(-40px);
+        }
+        50% {
+          transform: translateX(15px);
         }
         100% {
-          transform: translateY(0);
+          transform: translateX(0);
         }
       }
 
       @keyframes zoom {
         0% {
           transform: scale(0);
+        }
+        50% {
+          transform: scale(1.1);
         }
         100% {
           transform: scale(1);
@@ -130,10 +136,10 @@
 
       @keyframes flip {
         0% {
-          transform: rotateY(90deg);
+          transform: rotateX(90deg);
         }
         100% {
-          transform: rotateY(0);
+          transform: rotateX(0);
         }
       }
 
@@ -252,12 +258,12 @@
     <div class="buttons">
 
       <button
-        onclick="showToast({ type: 'success', message: 'Your changes have been saved', position: 'top-left', transition: 'none', autoClose: '5000', hideProgressBar: false, theme: 'light', progressPercent: 100 })"
+        onclick="showToast({ type: 'success', message: 'Your changes have been saved', position: 'top-left', transition: 'slide', autoClose: '5000', hideProgressBar: false, theme: 'light', progressPercent: 100 })"
       >
         Success Toast
       </button>
       <button
-        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'slide', autoClose: '7000', hideProgressBar: false, theme: 'dark' })"
+        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'bounce', autoClose: '7000', hideProgressBar: false, theme: 'dark' })"
       >
         Error Toast
       </button>
@@ -267,12 +273,12 @@
         Info Toast
       </button>
       <button
-        onclick="showToast({ type: 'warn', message: 'Here is some information', position: 'bottom-left', transition: 'zoom', theme: 'light', autoClose: 7000, theme: 'colored' })"
+        onclick="showToast({ type: 'warn', message: 'Here is some information', position: 'bottom-left', transition: 'flip', theme: 'light', autoClose: 7000, theme: 'colored' })"
       >
         Warning Toast
       </button>
       <button
-        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'slide', autoClose: 5000, hideProgressBar: false })"
+        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'slide', autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: false })"
       >
         Loading Toast
       </button>
@@ -294,7 +300,7 @@
         autoClose = 5000,
         hideProgressBar = false,
         transition = "slide",
-        closeOnClick = false,
+        closeOnClick = true,
         pauseOnHover = true,
         icon,
         color,
@@ -527,19 +533,6 @@
         function setToastPosition(position) {
           toast.className = "toast"; // Reset classes
           toast.classList.add(position); // Add position class
-
-          // // Center the toast for top-center and bottom-center positions
-          // if (position === "top-center" || position === "bottom-center") {
-          //   toast.style.left = "50%";
-          //   if (toast.classList.contains("none")) {
-          //     toast.style.marginLeft = ""; // Remove margin-left when transition is 'none'
-          //   } else {
-          //     toast.style.marginLeft = "-20.5vh"; // Set margin-left for centered positions
-          //   }
-          // } else {
-          //   toast.style.left = "";
-          //   toast.style.transform = "";
-          // }
         }
 
         setToastPosition(position);
