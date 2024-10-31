@@ -35,7 +35,7 @@
         background-color: #f2f2f2;
       }
 
-      .buttons{
+      .buttons {
         justify-content: center;
         align-items: center;
       }
@@ -191,6 +191,7 @@
         left: 0;
         height: 100%;
         width: 100%;
+        border-radius: 5px;
         background-color: var(--progress-color);
         transition: width linear;
       }
@@ -221,7 +222,7 @@
       .top-center {
         top: 20px;
         left: 50%;
-        margin-left: -20.5vh; /* Half of the fixed width (300px) */
+        margin-left: -20.5vh; /* Half of the fixed width (41vh) */
       }
 
       .bottom-left {
@@ -241,34 +242,24 @@
       .bottom-center {
         bottom: 20px;
         left: 50%;
-        margin-left: -20.5vh; /* Half of the fixed width (300px) */
+        margin-left: -20.5vh; /* Half of the fixed width (41vh) */
       }
     </style>
   </head>
   <body>
-    <div class="toast">
-      <div class="toast-content">
-        <span class="toast-icon"></span>
-        <span class="toast-message">Your changes have been saved</span>
-      </div>
-      <i class="fa-solid fa-xmark toast-close"></i>
-      <div class="toast-progress" id="toastProgress"></div>
-    </div>
-
     <div class="buttons">
-
       <button
-        onclick="showToast({ type: 'success', message: 'Your changes have been saved', position: 'top-left', transition: 'slide', autoClose: '5000', hideProgressBar: false, theme: 'light', progressPercent: 100 })"
+        onclick="showToast({ type: 'success', message: 'Saved successfully', position: 'top-left', transition: 'slide', autoClose: '8000', hideProgressBar: false, closeAble: true, theme: 'colored', progressPercent: 60 })"
       >
         Success Toast
       </button>
       <button
-        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'bounce', autoClose: '7000', hideProgressBar: false, theme: 'dark' })"
+        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'bounce', autoClose: '7000', hideProgressBar: false, theme: 'colored', closeAble: false })"
       >
         Error Toast
       </button>
       <button
-        onclick="showToast({ type: 'info', message: 'Here is some information', position: 'top-right', transition: 'zoom', theme: 'light', autoClose: 8000, theme: 'colored' })"
+        onclick="showToast({ type: 'info', message: 'Here is some information', position: 'top-right', transition: 'zoom', theme: 'light', autoClose: 8000, theme: 'light' })"
       >
         Info Toast
       </button>
@@ -278,29 +269,26 @@
         Warning Toast
       </button>
       <button
-        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'slide', autoClose: 5000, hideProgressBar: false, closeOnClick: false, pauseOnHover: false })"
+        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'slide', autoClose: 5000, hideProgressBar: false, closeAble: false, pauseOnHover: false })"
       >
         Loading Toast
       </button>
       <button
-        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#009999', message: 'Loading...', position: 'bottom-right', transition: 'none', autoClose: 'none', hideProgressBar: true, theme: 'colored' })"
+        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#009999', message: 'Loading...', position: 'bottom-right', transition: 'none', autoClose: 'none', hideProgressBar: true, theme: 'colored', closeAble: true })"
       >
         No Auto Close
       </button>
     </div>
 
     <script>
-      const toast = document.querySelector(".toast"),
-        closeIcon = document.querySelector(".toast-close"),
-        progress = document.querySelector("#toastProgress");
-
       function showToast({
         type = "none",
         position = "top-right",
         autoClose = 5000,
         hideProgressBar = false,
         transition = "slide",
-        closeOnClick = true,
+        closeAble = true,
+        closeOnClick = false,
         pauseOnHover = true,
         icon,
         color,
@@ -308,238 +296,179 @@
         theme = "light",
         progressPercent = 100,
       }) {
-        function resetToast() {
-          clearInterval(interval1);
-          clearInterval(interval2);
-          console.log("Interval stopped - target reached");
-          toast.classList.remove("active");
-          console.log("TOAST HIDE");
-          toast.style.display = "none";
-          isPaused = false; // Reset pause state
-          console.log("Toast reset"); // Log reset
-        }
+        // ICON TYPES FOR DIFFERENT TOAST TYPES
+        const iconTypes = {
+          success: '<i class="fa-solid fa-circle-check"></i>',
+          error: '<i class="fa-solid fa-circle-exclamation"></i>',
+          info: '<i class="fa-solid fa-circle-info"></i>',
+          warn: '<i class="fa-solid fa-triangle-exclamation"></i>',
+        };
 
-        // Validation for type 'none'
-        if (type === "none" && (!icon || !color)) {
-          console.error("Icon and color must be provided for type 'none'.");
-          return;
-        }
+        // SET DEFAULT ICON AND COLOR IF NOT PROVIDED
+        if (!icon)
+          icon = iconTypes[type] || '<i class="fa-solid fa-circle-info"></i>';
+        if (!color)
+          color =
+            type === "success"
+              ? "#07bc0c"
+              : type === "error"
+              ? "#f44"
+              : type === "info"
+              ? "#4070f4"
+              : "#f90";
 
-        // if type match then setting icon and color
+        // CREATE THE TOAST ELEMENT
+        const newToast = document.createElement("div");
+        newToast.classList.add("toast", position, transition);
+        newToast.innerHTML = `
+      <div class="toast-content">
+        <span class="toast-icon">${icon}</span>
+        <span class="toast-message">${message}</span>
+      </div>
+      <i class="fa-solid fa-xmark toast-close"></i>
+      <div class="toast-progress" id="toastProgress"></div>
+    `;
 
-        switch (type) {
-          case "success":
-            icon = '<i class="fa-solid fa-circle-check"></i>';
-            color = "#07bc0c";
-            break;
-          case "error":
-            icon = '<i class="fa-solid fa-circle-exclamation"></i>';
-            color = "#f44";
-            break;
-          case "info":
-            icon = '<i class="fa-solid fa-circle-info"></i>';
-            color = "#4070f4";
-            break;
-          case "warn":
-            icon = '<i class="fa-solid fa-triangle-exclamation"></i>';
-            color = "#f90";
-            break;
-          case "none":
-            // No changes needed as icon and color are already set
-            break;
-          default:
-            console.error("Invalid toast type.");
-            return; // Exit if type is invalid
-        }
+        // ADD TOAST TO THE DOCUMENT BODY
+        document.body.appendChild(newToast);
 
-        // Display progress bar if hideProgressBar is false
-        let interval1, interval2;
-        let isPaused = false;
-        let currentBarWidth, remainingTime, startTime;
+        // SELECT CLOSE ICON AND PROGRESS BAR ELEMENT
+        const closeIcon = newToast.querySelector(".toast-close");
+        const progressBar = newToast.querySelector(".toast-progress");
 
-        function setToastProgressBar(
-          progressBarElement,
-          targetPercentage = 0,
-          speed = 50,
-          transition = "width 0.1s ease"
-        ) {
-          currentBarWidth = 100;
-          progressBarElement.style.width = `${currentBarWidth}%`;
-          progressBarElement.style.display = "block";
-          progressBarElement.style.transition = transition;
-
-          let targetWidth = 100 - targetPercentage;
-          const step = targetWidth < currentBarWidth ? -1 : 1;
-
-          function updateProgressBar() {
-            if (currentBarWidth === targetWidth) {
-              clearInterval(interval1);
-              clearInterval(interval2);
-              console.log("Interval stopped - target reached");
-            } else {
-              currentBarWidth += step;
-              if (currentBarWidth === 0) {
-                resetToast();
-              }
-              remainingTime =
-                (speed * (targetWidth - currentBarWidth)) / (targetWidth - 100);
-              progressBarElement.style.width = `${currentBarWidth}%`;
-              console.log(`Progress bar running: ${currentBarWidth}%`);
-              //console.log(`Remaining time: ${remainingTime}ms`);
-            }
-          }
-
-          startTime = Date.now();
-          interval1 = setInterval(updateProgressBar, speed);
-
-          if (pauseOnHover && toast) {
-            toast.addEventListener("mouseenter", () => {
-              clearInterval(interval1);
-              clearInterval(interval2);
-
-              isPaused = true;
-              console.log("Progress bar paused on hover");
-            });
-
-            toast.addEventListener("mouseleave", () => {
-              if (isPaused) {
-                console.log("Progress bar resumed after hover");
-                interval2 = setInterval(updateProgressBar, speed);
-                isPaused = false;
-              }
-            });
-          }
-
-          if (closeOnClick && toast) {
-            toast.addEventListener("click", () => {
-              targetWidth = currentBarWidth;
-              clearInterval(interval1);
-              clearInterval(interval2);
-              console.log("Toast closed on click");
-              resetToast();
-            });
-          }
-
-          if (closeIcon) {
-            closeIcon.addEventListener("click", () => {
-              targetWidth = currentBarWidth;
-              clearInterval(interval1);
-              clearInterval(interval2);
-              console.log("Toast closed by close icon");
-              resetToast();
-            });
-          }
-        }
-
-        closeIcon.addEventListener("click", () => {
-              targetWidth = currentBarWidth;
-              clearInterval(interval1);
-              clearInterval(interval2);
-              console.log("Toast closed by close icon");
-              resetToast();
-            });
-
-        // Show or hide progress bar based on hideProgressBar value
-        if (!hideProgressBar) {
-          progress.style.display = "block";
-          progress.classList.add("active");
-
-          let duration = autoClose === "none" ? 50 : autoClose / 100;
-          setToastProgressBar(progress, progressPercent, duration);
+        // CHECK IF THE TOAST SHOULD BE CLOSABLE
+        if (closeAble) {
+          // SHOW CLOSE ICON
+          closeIcon.style.display = "block";
+          closeIcon.addEventListener("click", () => resetToast(newToast));
         } else {
-          progress.style.display = "none";
+          // HIDE CLOSE ICON IF NOT CLOSABLE
+          closeIcon.style.display = "none";
         }
 
-        // add transition to the toast
-        function addToastTransiton(transition) {
-          // Add transition class if not 'none'
-          if (transition !== "none") {
-            toast.classList.add(transition);
+        // CLOSE TOAST ON CLICK IF closeOnClick AND closeAble ARE BOTH TRUE
+        if (closeOnClick && closeAble) {
+          newToast.addEventListener("click", () => resetToast(newToast));
+        }
+
+        // INITIALIZE WIDTH, START TIME, REMAINING TIME, AND INTERVAL VARIABLES
+        let width = 100;
+        let progressInterval;
+        let autoCloseTimeout;
+        let remainingTime = autoClose;
+        let startTime = Date.now();
+
+        let targetWidth = 100 - progressPercent; // SET TARGET WIDTH BASED ON INITIAL PERCENTAGE
+        const step = targetWidth < width ? -1 : 1; // DETERMINE STEP DIRECTION
+
+        // FUNCTION TO START AUTO-CLOSING TOAST AND PROGRESS BAR
+        function startAutoClose() {
+          startTime = Date.now(); // RESET START TIME
+          console.log("start timer");
+          if (
+            (step < 0 && width <= targetWidth) ||
+            (step > 0 && width >= targetWidth)
+          )
+            return;
+          autoCloseTimeout = setTimeout(
+            () => resetToast(newToast),
+            remainingTime
+          ); // SET AUTO-CLOSE TIMEOUT
+
+          // IF PROGRESS BAR IS ENABLED, SET UP INTERVAL TO UPDATE WIDTH
+          if (!hideProgressBar) {
+            if (
+              (step < 0 && width <= targetWidth) ||
+              (step > 0 && width >= targetWidth)
+            )
+              return;
+            progressBar.style.transition = "width 0.1s ease";
+            progressInterval = setInterval(() => {
+              const elapsed = Date.now() - startTime;
+              width += step; // INCREMENT OR DECREMENT WIDTH BASED ON STEP
+              console.log("update bar");
+
+              progressBar.style.width = `${width}%`;
+
+              // CHECK IF WIDTH REACHED TARGET WIDTH AND STOP INTERVAL
+              if (
+                (step < 0 && width <= targetWidth) ||
+                (step > 0 && width >= targetWidth)
+              ) {
+                clearInterval(progressInterval);
+                clearTimeout(autoCloseTimeout);
+                width = targetWidth; // SET EXACT TARGET WIDTH TO AVOID OVERFLOW
+              }
+
+              // IF WIDTH REACHES 0, STOP INTERVAL AND CLOSE TOAST
+              if (width <= 0) {
+                clearInterval(progressInterval);
+                resetToast(newToast);
+              }
+            }, autoClose / 100);
           }
-          // toast.classList.add("active");
         }
 
-        // set theme to the toast
-        function setToastTheme(theme, color) {
+        // FUNCTION TO STOP AUTO-CLOSE AND PAUSE PROGRESS BAR
+        function stopAutoClose() {
+          clearTimeout(autoCloseTimeout); // CLEAR AUTO-CLOSE TIMEOUT
+          remainingTime -= Date.now() - startTime; // UPDATE REMAINING TIME BASED ON TIME PASSED
+          clearInterval(progressInterval); // CLEAR PROGRESS INTERVAL
+        }
+
+        // HIDE PROGRESS BAR IF hideProgressBar IS TRUE
+        if (hideProgressBar) {
+          progressBar.style.display = "none";
+        }
+
+        // IF autoClose IS NOT 'none', START AUTO-CLOSE FUNCTION
+        if (autoClose !== "none") {
+          startAutoClose();
+        }
+
+        // PAUSE ON HOVER FEATURE
+        if (pauseOnHover && autoClose !== "none") {
+          newToast.addEventListener("mouseenter", stopAutoClose); // PAUSE ON MOUSE ENTER
+          newToast.addEventListener("mouseleave", () => {
+            startAutoClose(); // RESUME ON MOUSE LEAVE
+          });
+        }
+
+        // APPLY THEME TO TOAST
+        setToastTheme(newToast, theme, color);
+
+        // MAKE TOAST ACTIVE TO TRIGGER ANIMATION
+        newToast.classList.add("active");
+
+        // FUNCTION TO RESET TOAST BY REMOVING IT FROM THE DOM
+        function resetToast(toastElement) {
+          toastElement.classList.remove("active");
+          setTimeout(() => toastElement.remove(), 300); // REMOVE ELEMENT AFTER TRANSITION
+        }
+
+        // FUNCTION TO APPLY SELECTED THEME TO THE TOAST
+        function setToastTheme(toast, theme, color) {
           switch (theme) {
             case "dark":
-              document.documentElement.style.setProperty(
-                "--toast-bg-color",
-                "#333"
-              );
-              document.documentElement.style.setProperty(
-                "--toast-font-color",
-                "#fff"
-              );
-              document.documentElement.style.setProperty("--icon-color", color);
-              document.documentElement.style.setProperty(
-                "--progress-color",
-                color
-              );
-              break;
-            case "light":
-              document.documentElement.style.setProperty(
-                "--toast-bg-color",
-                "#fff"
-              );
-              document.documentElement.style.setProperty(
-                "--toast-font-color",
-                "#666666"
-              );
-              document.documentElement.style.setProperty("--icon-color", color);
-              document.documentElement.style.setProperty(
-                "--progress-color",
-                color
-              );
+              toast.style.setProperty("--toast-bg-color", "#333");
+              toast.style.setProperty("--toast-font-color", "#fff");
+              toast.style.setProperty("--icon-color", color);
+              toast.style.setProperty("--progress-color", color);
               break;
             case "colored":
-              // Assuming color is passed in for the colored theme
-              document.documentElement.style.setProperty(
-                "--toast-bg-color",
-                color
-              );
-              document.documentElement.style.setProperty(
-                "--toast-font-color",
-                "#fff"
-              ); // Keep font color white for contrast
-              document.documentElement.style.setProperty(
-                "--icon-color",
-                "#fff"
-              ); // Set icon color to white for visibility
-              document.documentElement.style.setProperty(
-                "--progress-color",
-                "#fff"
-              ); // Progress color can also be white
+              toast.style.setProperty("--toast-bg-color", color);
+              toast.style.setProperty("--toast-font-color", "#fff");
+              toast.style.setProperty("--icon-color", "#fff");
+              toast.style.setProperty("--progress-color", "#fff");
               break;
             default:
-              console.error("Invalid theme specified.");
+              toast.style.setProperty("--toast-bg-color", "#fff");
+              toast.style.setProperty("--toast-font-color", "#666666");
+              toast.style.setProperty("--icon-color", color);
+              toast.style.setProperty("--progress-color", color);
               break;
           }
         }
-
-        function updateToastContent(icon, message) {
-          const toastIcon = toast.querySelector(".toast-icon");
-          const toastMessage = toast.querySelector(".toast-message");
-
-          toastIcon.innerHTML = icon;
-          toastMessage.textContent = message;
-        }
-
-        function displayToast() {
-          toast.style.display = "flex";
-          toast.classList.add("active");
-        }
-
-        function setToastPosition(position) {
-          toast.className = "toast"; // Reset classes
-          toast.classList.add(position); // Add position class
-        }
-
-        setToastPosition(position);
-        setToastTheme(theme, color);
-        addToastTransiton(transition);
-        updateToastContent(icon, message);
-        displayToast();
       }
     </script>
   </body>
