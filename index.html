@@ -74,13 +74,15 @@
         color: var(--toast-font-color);
       }
 
+      /* Active State */
       .toast.active {
         opacity: 1;
+        pointer-events: auto;
       }
 
       /* Toast transitions */
-      .toast.bounce {
-        animation: bounce 0.5s forwards;
+      /* .toast.bounce-top {
+        animation: bounce-top 0.5s forwards;
       }
 
       .toast.slide {
@@ -98,7 +100,7 @@
         animation: flip 0.5s forwards;
       }
 
-      @keyframes bounce {
+      @keyframes bounce-top {
         0% {
           transform: translateY(-30px);
         }
@@ -141,7 +143,7 @@
         100% {
           transform: rotateX(0);
         }
-      }
+      } */
 
       .toast .toast-content {
         display: flex;
@@ -244,22 +246,324 @@
         left: 50%;
         margin-left: -20.5vh; /* Half of the fixed width (41vh) */
       }
+
+      /* Bounce Animations */
+      @keyframes bounceInLeft {
+        0% {
+          transform: translateX(-100%) scale(0.8);
+          opacity: 0;
+        }
+        60% {
+          transform: translateX(20px) scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(0) scale(1);
+        }
+      }
+
+      @keyframes bounceOutRight {
+        0% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(100%) scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      @keyframes bounceInRight {
+        0% {
+          transform: translateX(100%) scale(0.8);
+          opacity: 0;
+        }
+        60% {
+          transform: translateX(-20px) scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(0) scale(1);
+        }
+      }
+
+      @keyframes bounceOutLeft {
+        0% {
+          transform: translateX(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-100%) scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      /* Slide Animations */
+      @keyframes slideInLeft {
+        0% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOutRight {
+        0% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes slideInRight {
+        0% {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOutLeft {
+        0% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(-100%);
+          opacity: 0;
+        }
+      }
+
+      /* Bottom-Center and Top-Center Bounce Animations */
+      @keyframes bounceInBottom {
+        0% {
+          transform: translateY(100%) scale(0.8);
+          opacity: 0;
+        }
+        60% {
+          transform: translateY(-10px) scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes bounceOutBottom {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100%) scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      @keyframes bounceInTop {
+        0% {
+          transform: translateY(-100%) scale(0.8);
+          opacity: 0;
+        }
+        60% {
+          transform: translateY(10px) scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes bounceOutTop {
+        0% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100%) scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      /* Bottom-Center and Top-Center Slide Animations */
+      @keyframes slideInBottom {
+        0% {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOutBottom {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100%);
+          opacity: 0;
+        }
+      }
+
+      @keyframes slideInTop {
+        0% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+        100% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOutTop {
+        0% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-100%);
+          opacity: 0;
+        }
+      }
+
+      /* Zoom Animations */
+      @keyframes zoomIn {
+        0% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      @keyframes zoomOut {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(0.5);
+          opacity: 0;
+        }
+      }
+
+      /* Flip Animations */
+      @keyframes flipIn {
+        0% {
+          transform: rotateX(90deg);
+          opacity: 0;
+        }
+        100% {
+          transform: rotateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes flipOut {
+        0% {
+          transform: rotateX(0);
+          opacity: 1;
+        }
+        100% {
+          transform: rotateX(90deg);
+          opacity: 0;
+        }
+      }
+
+      /* Applying Entry Animations */
+      .bounce-left {
+        animation: bounceInLeft 0.8s forwards;
+      }
+      .bounce-right {
+        animation: bounceInRight 0.8s forwards;
+      }
+      .bounce-bottom {
+        animation: bounceInBottom 0.8s forwards;
+      }
+      .bounce-top {
+        animation: bounceInTop 0.8s forwards;
+      }
+      .slide-left {
+        animation: slideInLeft 0.5s forwards;
+      }
+      .slide-right {
+        animation: slideInRight 0.5s forwards;
+      }
+      .slide-bottom {
+        animation: slideInBottom 0.5s forwards;
+      }
+      .slide-top {
+        animation: slideInTop 0.5s forwards;
+      }
+      .zoom {
+        animation: zoomIn 0.5s forwards;
+      }
+      .flip {
+        animation: flipIn 0.5s forwards;
+      }
+
+      /* Applying Exit Animations */
+      .bounce-left-close {
+        animation: bounceOutLeft 0.8s forwards;
+      }
+      .bounce-right-close {
+        animation: bounceOutRight 0.8s forwards;
+      }
+      .bounce-bottom-close {
+        animation: bounceOutBottom 0.8s forwards;
+      }
+      .bounce-top-close {
+        animation: bounceOutTop 0.8s forwards;
+      }
+      .slide-left-close {
+        animation: slideOutLeft 0.5s forwards;
+      }
+      .slide-right-close {
+        animation: slideOutRight 0.5s forwards;
+      }
+      .slide-bottom-close {
+        animation: slideOutBottom 0.5s forwards;
+      }
+      .slide-top-close {
+        animation: slideOutTop 0.5s forwards;
+      }
+      .zoom-close {
+        animation: zoomOut 0.5s forwards;
+      }
+      .flip-close {
+        animation: flipOut 0.5s forwards;
+      }
     </style>
   </head>
   <body>
     <div class="buttons">
       <button
-        onclick="showToast({ type: 'success', message: 'Saved successfully', position: 'top-left', transition: 'slide', autoClose: '8000', hideProgressBar: false, closeAble: true, theme: 'colored', progressPercent: 60 })"
+        onclick="showToast({ type: 'success', message: 'Saved successfully', position: 'top-left', autoClose: '8000', hideProgressBar: false, closeAble: true, theme: 'colored', progressPercent: 100, transition: 'flip' })"
       >
         Success Toast
       </button>
       <button
-        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'bounce', autoClose: '7000', hideProgressBar: false, theme: 'colored', closeAble: false })"
+        onclick="showToast({ type: 'error', message: 'Something went wrong!', position: 'top-center', transition: 'flip', autoClose: '7000', hideProgressBar: false, theme: 'colored', closeAble: false })"
       >
         Error Toast
       </button>
       <button
-        onclick="showToast({ type: 'info', message: 'Here is some information', position: 'top-right', transition: 'zoom', theme: 'light', autoClose: 8000, theme: 'light' })"
+        onclick="showToast({ type: 'info', message: 'Here is some information', position: 'top-right', transition: 'flip', theme: 'light', autoClose: 8000, theme: 'light' })"
       >
         Info Toast
       </button>
@@ -269,12 +573,12 @@
         Warning Toast
       </button>
       <button
-        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'slide', autoClose: 5000, hideProgressBar: false, closeAble: false, pauseOnHover: false })"
+        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#AA336A', message: 'Loading...', position: 'bottom-center', transition: 'flip', autoClose: 5000, hideProgressBar: false, closeAble: false, pauseOnHover: false })"
       >
         Loading Toast
       </button>
       <button
-        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#009999', message: 'Loading...', position: 'bottom-right', transition: 'none', autoClose: 'none', hideProgressBar: true, theme: 'colored', closeAble: true })"
+        onclick="showToast({ type: 'none', icon: '<i class=\'fa-solid fa-hourglass-end\'></i>', color: '#009999', message: 'Loading...', position: 'bottom-right', transition: 'flip', autoClose: 'none', hideProgressBar: true, theme: 'colored', closeAble: true })"
       >
         No Auto Close
       </button>
@@ -286,7 +590,7 @@
         position = "top-right",
         autoClose = 5000,
         hideProgressBar = false,
-        transition = "slide",
+        transition,
         closeAble = true,
         closeOnClick = false,
         pauseOnHover = true,
@@ -317,17 +621,78 @@
               ? "#4070f4"
               : "#f90";
 
+        // FUNCTION TO GET ENTRY AND EXIT ANIMATION CLASSES
+        function getAnimationClasses(transition, position) {
+          // Animation mappings for entry and exit
+          const animationMapping = {
+            zoom: { entry: "zoom", exit: "zoom-close" },
+            flip: { entry: "flip", exit: "flip-close" },
+            slide: {
+              "top-left": { entry: "slide-left", exit: "slide-left-close" },
+              "top-right": { entry: "slide-right", exit: "slide-right-close" },
+              "bottom-left": { entry: "slide-left", exit: "slide-left-close" },
+              "bottom-right": {
+                entry: "slide-right",
+                exit: "slide-right-close",
+              },
+              "top-center": { entry: "slide-top", exit: "slide-top-close" },
+              "bottom-center": {
+                entry: "slide-bottom",
+                exit: "slide-bottom-close",
+              },
+            },
+            bounce: {
+              "top-left": { entry: "bounce-left", exit: "bounce-left-close" },
+              "top-right": {
+                entry: "bounce-right",
+                exit: "bounce-right-close",
+              },
+              "bottom-left": {
+                entry: "bounce-left",
+                exit: "bounce-left-close",
+              },
+              "bottom-right": {
+                entry: "bounce-right",
+                exit: "bounce-right-close",
+              },
+              "top-center": { entry: "bounce-top", exit: "bounce-top-close" },
+              "bottom-center": {
+                entry: "bounce-bottom",
+                exit: "bounce-bottom-close",
+              },
+            },
+          };
+
+          // If transition is 'zoom' or 'flip', return it directly as it doesn't depend on position
+          if (transition === "zoom" || transition === "flip") {
+            return animationMapping[transition];
+          }
+
+          // Check if the transition type requires a specific position (slide or bounce)
+          if (
+            animationMapping[transition] &&
+            animationMapping[transition][position]
+          ) {
+            return animationMapping[transition][position];
+          }
+
+          // Default to zoom if transition or position not found
+          return { entry: "zoom", exit: "zoom-close" };
+        }
+
         // CREATE THE TOAST ELEMENT
         const newToast = document.createElement("div");
-        newToast.classList.add("toast", position, transition);
+        const { entry } = getAnimationClasses(transition, position);
+
+        newToast.classList.add("toast", position, entry);
         newToast.innerHTML = `
-      <div class="toast-content">
-        <span class="toast-icon">${icon}</span>
-        <span class="toast-message">${message}</span>
-      </div>
-      <i class="fa-solid fa-xmark toast-close"></i>
-      <div class="toast-progress" id="toastProgress"></div>
-    `;
+          <div class="toast-content">
+            <span class="toast-icon">${icon}</span>
+            <span class="toast-message">${message}</span>
+          </div>
+          <i class="fa-solid fa-xmark toast-close"></i>
+          <div class="toast-progress" id="toastProgress"></div>
+        `;
 
         // ADD TOAST TO THE DOCUMENT BODY
         document.body.appendChild(newToast);
@@ -364,12 +729,7 @@
         // FUNCTION TO START AUTO-CLOSING TOAST AND PROGRESS BAR
         function startAutoClose() {
           startTime = Date.now(); // RESET START TIME
-          console.log("start timer");
-          if (
-            (step < 0 && width <= targetWidth) ||
-            (step > 0 && width >= targetWidth)
-          )
-            return;
+          if (width <= targetWidth || width <= 0) return;
           autoCloseTimeout = setTimeout(
             () => resetToast(newToast),
             remainingTime
@@ -377,24 +737,16 @@
 
           // IF PROGRESS BAR IS ENABLED, SET UP INTERVAL TO UPDATE WIDTH
           if (!hideProgressBar) {
-            if (
-              (step < 0 && width <= targetWidth) ||
-              (step > 0 && width >= targetWidth)
-            )
-              return;
+            if (width <= targetWidth || width <= 0) return;
             progressBar.style.transition = "width 0.1s ease";
             progressInterval = setInterval(() => {
               const elapsed = Date.now() - startTime;
               width += step; // INCREMENT OR DECREMENT WIDTH BASED ON STEP
-              console.log("update bar");
 
               progressBar.style.width = `${width}%`;
 
               // CHECK IF WIDTH REACHED TARGET WIDTH AND STOP INTERVAL
-              if (
-                (step < 0 && width <= targetWidth) ||
-                (step > 0 && width >= targetWidth)
-              ) {
+              if (width <= targetWidth || width <= 0) {
                 clearInterval(progressInterval);
                 clearTimeout(autoCloseTimeout);
                 width = targetWidth; // SET EXACT TARGET WIDTH TO AVOID OVERFLOW
@@ -442,8 +794,10 @@
 
         // FUNCTION TO RESET TOAST BY REMOVING IT FROM THE DOM
         function resetToast(toastElement) {
-          toastElement.classList.remove("active");
+          const { exit } = getAnimationClasses(transition, position);
+          toastElement.classList.replace(toastElement.classList.item(3), exit); // Replace entry with exit animation
           setTimeout(() => toastElement.remove(), 300); // REMOVE ELEMENT AFTER TRANSITION
+          toastElement.classList.remove("active");
         }
 
         // FUNCTION TO APPLY SELECTED THEME TO THE TOAST
