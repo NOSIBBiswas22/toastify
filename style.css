@@ -1,0 +1,168 @@
+ /* Basic reset and styling */
+ * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: #f2f5f9;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  h1 {
+    font-size: 1.8em;
+    color: #444;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: color 0.3s;
+  }
+
+  .dark-theme h1 {
+    color: #fff;
+  }
+
+  /* Theme toggle button styling */
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd700, #ffa500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .theme-toggle .icon {
+    font-size: 1.3em;
+    color: #fff;
+    transition: transform 0.5s;
+  }
+
+  .dark-theme {
+    background-color: #1c1c1c;
+    color: #f0f0f0;
+  }
+
+  .dark-theme .theme-toggle {
+    background: linear-gradient(135deg, #1f4037, #2b5876);
+  }
+
+  .dark-theme .theme-toggle .icon {
+    transform: rotate(360deg); /* Rotate the icon for a moon effect */
+    color: #ffd700;
+  }
+
+  /* Form container styling */
+  .form-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .dark-theme .form-container {
+    background-color: #2b2b2b;
+    color: #ddd;
+  }
+
+  /* Improved form group styling */
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    font-size: 1em;
+    font-weight: 600;
+    color: #666;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 1em;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #764ba2;
+  }
+
+  .dark-theme .form-group label {
+    color: #eee;
+  }
+
+  .dark-theme .form-group input,
+  .dark-theme .form-group select {
+    background-color: #444;
+    color: #eee;
+    border-color: #888;
+  }
+
+  /* Dark theme placeholder color */
+  .dark-theme .form-group input::placeholder {
+    color: #bbb;
+  }
+
+  /* Checkbox styling */
+
+  .checkbox-label {
+    display: inline-block;
+    font-weight: 500;
+    color: #555;
+    vertical-align: middle;
+    line-height: 1; /* Ensures label aligns with checkbox */
+  }
+
+  .dark-theme .checkbox-label {
+    color: #ccc;
+  }
+
+  .form-group input[type="checkbox"] {
+    margin-top: -2px; /* Adjust this if needed to align the checkbox perfectly */
+    vertical-align: middle;
+    accent-color: #667eea;
+  }
+
+  .dark-theme .form-group input[type="checkbox"] {
+    accent-color: #ffd700;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  button:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
