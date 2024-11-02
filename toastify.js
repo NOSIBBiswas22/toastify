@@ -1,8 +1,9 @@
 function addToastStyles() {
-    if (!document.getElementById("toastStyles")) {
-        const toastStyles = `
+  if (!document.getElementById("toastStyles")) {
+    const toastStyles = `
         /Font-awesome Import/
-        @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+
         /* Google Font Import */
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
   
@@ -36,6 +37,7 @@ function addToastStyles() {
         }
   
         /* Toast transitions */
+
         /* .toast.bounce-top {
           animation: bounce-top 0.5s forwards;
         }
@@ -135,7 +137,7 @@ function addToastStyles() {
           position: absolute;
           bottom: 0;
           left: 0;
-          height: 3px;
+          height: 4px;
           width: 100%;
           background: #ddd;
           overflow: hidden;
@@ -505,146 +507,154 @@ function addToastStyles() {
         }
      
       `;
-        const toastStyleSheet = document.createElement("style");
-        toastStyleSheet.type = "text/css";
-        toastStyleSheet.id = "toastStyles"; // Add ID to prevent multiple injections
-        toastStyleSheet.innerText = toastStyles;
-        document.head.appendChild(toastStyleSheet);
-    }
+    const toastStyleSheet = document.createElement("style");
+    toastStyleSheet.type = "text/css";
+    toastStyleSheet.id = "toastStyles"; // Add ID to prevent multiple injections
+    toastStyleSheet.innerText = toastStyles;
+    document.head.appendChild(toastStyleSheet);
+  }
 }
 
 addToastStyles();
 
 function showToast({
-    type = "none",
-    position = "top-right",
-    autoClose = 5000,
-    hideProgressBar = false,
-    transition,
-    closeAble = true,
-    closeOnClick = false,
-    pauseOnHover = true,
-    icon,
-    color,
-    message,
-    theme = "light",
-    progressPercent = 100,
+  type = "none",
+  position = "top-right",
+  autoClose = 5000,
+  hideProgressBar = false,
+  transition,
+  closeAble = true,
+  closeOnClick = false,
+  pauseOnHover = true,
+  icon,
+  color,
+  message,
+  theme = "light",
+  progressPercent = 100,
 }) {
-    // ICON TYPES FOR DIFFERENT TOAST TYPES
-    const iconTypes = {
-        success: '<i class="fa-solid fa-circle-check"></i>',
-        error: '<i class="fa-solid fa-circle-exclamation"></i>',
-        info: '<i class="fa-solid fa-circle-info"></i>',
-        warn: '<i class="fa-solid fa-triangle-exclamation"></i>',
+  // ICON TYPES FOR DIFFERENT TOAST TYPES
+  const iconTypes = {
+    success: '<i class="fa-solid fa-circle-check"></i>',
+    error: '<i class="fa-solid fa-circle-exclamation"></i>',
+    info: '<i class="fa-solid fa-circle-info"></i>',
+    warn: '<i class="fa-solid fa-triangle-exclamation"></i>',
+  };
+
+  // DEFAULT MESSAGES FOR DIFFERENT TOAST TYPES
+  const messageTypes = {
+    success: "Successfully completed!",
+    error: "Something went wrong!",
+    info: "Here is some information for you.",
+    warn: "Please be cautious!",
+  };
+
+  // SET DEFAULT ICON, COLOR, AND MESSAGE IF NOT PROVIDED
+  if (!icon)
+    icon = iconTypes[type] || '<i class="fa-solid fa-circle-info"></i>';
+  if (!color)
+    color =
+    type === "success" ? "#07bc0c" :
+    type === "error" ? "#f44" :
+    type === "info" ? "#4070f4" :
+    "#f90";
+  if (!message)
+    message = messageTypes[type] || "This is a notification.";
+
+
+  // FUNCTION TO GET ENTRY AND EXIT ANIMATION CLASSES
+  function getAnimationClasses(transition, position) {
+    // Animation mappings for entry and exit
+    const animationMapping = {
+      zoom: {
+        entry: "zoom",
+        exit: "zoom-close"
+      },
+      flip: {
+        entry: "flip",
+        exit: "flip-close"
+      },
+      slide: {
+        "top-left": {
+          entry: "slide-left",
+          exit: "slide-left-close"
+        },
+        "top-right": {
+          entry: "slide-right",
+          exit: "slide-right-close"
+        },
+        "bottom-left": {
+          entry: "slide-left",
+          exit: "slide-left-close"
+        },
+        "bottom-right": {
+          entry: "slide-right",
+          exit: "slide-right-close",
+        },
+        "top-center": {
+          entry: "slide-top",
+          exit: "slide-top-close"
+        },
+        "bottom-center": {
+          entry: "slide-bottom",
+          exit: "slide-bottom-close",
+        },
+      },
+      bounce: {
+        "top-left": {
+          entry: "bounce-left",
+          exit: "bounce-left-close"
+        },
+        "top-right": {
+          entry: "bounce-right",
+          exit: "bounce-right-close",
+        },
+        "bottom-left": {
+          entry: "bounce-left",
+          exit: "bounce-left-close",
+        },
+        "bottom-right": {
+          entry: "bounce-right",
+          exit: "bounce-right-close",
+        },
+        "top-center": {
+          entry: "bounce-top",
+          exit: "bounce-top-close"
+        },
+        "bottom-center": {
+          entry: "bounce-bottom",
+          exit: "bounce-bottom-close",
+        },
+      },
     };
 
-    // SET DEFAULT ICON AND COLOR IF NOT PROVIDED
-    if (!icon)
-        icon = iconTypes[type] || '<i class="fa-solid fa-circle-info"></i>';
-    if (!color)
-        color =
-        type === "success" ?
-        "#07bc0c" :
-        type === "error" ?
-        "#f44" :
-        type === "info" ?
-        "#4070f4" :
-        "#f90";
-
-    // FUNCTION TO GET ENTRY AND EXIT ANIMATION CLASSES
-    function getAnimationClasses(transition, position) {
-        // Animation mappings for entry and exit
-        const animationMapping = {
-            zoom: {
-                entry: "zoom",
-                exit: "zoom-close"
-            },
-            flip: {
-                entry: "flip",
-                exit: "flip-close"
-            },
-            slide: {
-                "top-left": {
-                    entry: "slide-left",
-                    exit: "slide-left-close"
-                },
-                "top-right": {
-                    entry: "slide-right",
-                    exit: "slide-right-close"
-                },
-                "bottom-left": {
-                    entry: "slide-left",
-                    exit: "slide-left-close"
-                },
-                "bottom-right": {
-                    entry: "slide-right",
-                    exit: "slide-right-close",
-                },
-                "top-center": {
-                    entry: "slide-top",
-                    exit: "slide-top-close"
-                },
-                "bottom-center": {
-                    entry: "slide-bottom",
-                    exit: "slide-bottom-close",
-                },
-            },
-            bounce: {
-                "top-left": {
-                    entry: "bounce-left",
-                    exit: "bounce-left-close"
-                },
-                "top-right": {
-                    entry: "bounce-right",
-                    exit: "bounce-right-close",
-                },
-                "bottom-left": {
-                    entry: "bounce-left",
-                    exit: "bounce-left-close",
-                },
-                "bottom-right": {
-                    entry: "bounce-right",
-                    exit: "bounce-right-close",
-                },
-                "top-center": {
-                    entry: "bounce-top",
-                    exit: "bounce-top-close"
-                },
-                "bottom-center": {
-                    entry: "bounce-bottom",
-                    exit: "bounce-bottom-close",
-                },
-            },
-        };
-
-        // If transition is 'zoom' or 'flip', return it directly as it doesn't depend on position
-        if (transition === "zoom" || transition === "flip") {
-            return animationMapping[transition];
-        }
-
-        // Check if the transition type requires a specific position (slide or bounce)
-        if (
-            animationMapping[transition] &&
-            animationMapping[transition][position]
-        ) {
-            return animationMapping[transition][position];
-        }
-
-        // Default to zoom if transition or position not found
-        return {
-            entry: "zoom",
-            exit: "zoom-close"
-        };
+    // If transition is 'zoom' or 'flip', return it directly as it doesn't depend on position
+    if (transition === "zoom" || transition === "flip") {
+      return animationMapping[transition];
     }
 
-    // CREATE THE TOAST ELEMENT
-    const newToast = document.createElement("div");
-    const {
-        entry
-    } = getAnimationClasses(transition, position);
+    // Check if the transition type requires a specific position (slide or bounce)
+    if (
+      animationMapping[transition] &&
+      animationMapping[transition][position]
+    ) {
+      return animationMapping[transition][position];
+    }
 
-    newToast.classList.add("toast", position, entry);
-    newToast.innerHTML = `
+    // Default to zoom if transition or position not found
+    return {
+      entry: "zoom",
+      exit: "zoom-close"
+    };
+  }
+
+  // CREATE THE TOAST ELEMENT
+  const newToast = document.createElement("div");
+  const {
+    entry
+  } = getAnimationClasses(transition, position);
+
+  newToast.classList.add("toast", position, entry);
+  newToast.innerHTML = `
             <div class="toast-content">
               <span class="toast-icon">${icon}</span>
               <span class="toast-message">${message}</span>
@@ -653,135 +663,135 @@ function showToast({
             <div class="toast-progress" id="toastProgress"></div>
           `;
 
-    // ADD TOAST TO THE DOCUMENT BODY
-    document.body.appendChild(newToast);
+  // ADD TOAST TO THE DOCUMENT BODY
+  document.body.appendChild(newToast);
 
-    // SELECT CLOSE ICON AND PROGRESS BAR ELEMENT
-    const closeIcon = newToast.querySelector(".toast-close");
-    const progressBar = newToast.querySelector(".toast-progress");
+  // SELECT CLOSE ICON AND PROGRESS BAR ELEMENT
+  const closeIcon = newToast.querySelector(".toast-close");
+  const progressBar = newToast.querySelector(".toast-progress");
 
-    // CHECK IF THE TOAST SHOULD BE CLOSABLE
-    if (closeAble) {
-        // SHOW CLOSE ICON
-        closeIcon.style.display = "block";
-        closeIcon.addEventListener("click", () => resetToast(newToast));
-    } else {
-        // HIDE CLOSE ICON IF NOT CLOSABLE
-        closeIcon.style.display = "none";
-    }
+  // CHECK IF THE TOAST SHOULD BE CLOSABLE
+  if (closeAble) {
+    // SHOW CLOSE ICON
+    closeIcon.style.display = "block";
+    closeIcon.addEventListener("click", () => resetToast(newToast));
+  } else {
+    // HIDE CLOSE ICON IF NOT CLOSABLE
+    closeIcon.style.display = "none";
+  }
 
-    // CLOSE TOAST ON CLICK IF closeOnClick AND closeAble ARE BOTH TRUE
-    if (closeOnClick && closeAble) {
-        newToast.addEventListener("click", () => resetToast(newToast));
-    }
+  // CLOSE TOAST ON CLICK IF closeOnClick AND closeAble ARE BOTH TRUE
+  if (closeOnClick && closeAble) {
+    newToast.addEventListener("click", () => resetToast(newToast));
+  }
 
-    // INITIALIZE WIDTH, START TIME, REMAINING TIME, AND INTERVAL VARIABLES
-    let width = 100;
-    let progressInterval;
-    let autoCloseTimeout;
-    let remainingTime = autoClose;
-    let startTime = Date.now();
+  // INITIALIZE WIDTH, START TIME, REMAINING TIME, AND INTERVAL VARIABLES
+  let width = 100;
+  let progressInterval;
+  let autoCloseTimeout;
+  let remainingTime = autoClose;
+  let startTime = Date.now();
 
-    let targetWidth = 100 - progressPercent; // SET TARGET WIDTH BASED ON INITIAL PERCENTAGE
-    const step = targetWidth < width ? -1 : 1; // DETERMINE STEP DIRECTION
+  let targetWidth = 100 - progressPercent; // SET TARGET WIDTH BASED ON INITIAL PERCENTAGE
+  const step = targetWidth < width ? -1 : 1; // DETERMINE STEP DIRECTION
 
-    // FUNCTION TO START AUTO-CLOSING TOAST AND PROGRESS BAR
-    function startAutoClose() {
-        startTime = Date.now(); // RESET START TIME
-        if (width <= targetWidth || width <= 0) return;
-        autoCloseTimeout = setTimeout(
-            () => resetToast(newToast),
-            remainingTime
-        ); // SET AUTO-CLOSE TIMEOUT
+  // FUNCTION TO START AUTO-CLOSING TOAST AND PROGRESS BAR
+  function startAutoClose() {
+    startTime = Date.now(); // RESET START TIME
+    if (width <= targetWidth || width <= 0) return;
+    autoCloseTimeout = setTimeout(
+      () => resetToast(newToast),
+      remainingTime
+    ); // SET AUTO-CLOSE TIMEOUT
 
-        // IF PROGRESS BAR IS ENABLED, SET UP INTERVAL TO UPDATE WIDTH
-        if (!hideProgressBar) {
-            if (width <= targetWidth || width <= 0) return;
-            progressBar.style.transition = "width 0.1s ease";
-            progressInterval = setInterval(() => {
-                const elapsed = Date.now() - startTime;
-                width += step; // INCREMENT OR DECREMENT WIDTH BASED ON STEP
+    // IF PROGRESS BAR IS ENABLED, SET UP INTERVAL TO UPDATE WIDTH
+    if (!hideProgressBar) {
+      if (width <= targetWidth || width <= 0) return;
+      progressBar.style.transition = "width 0.1s ease";
+      progressInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        width += step; // INCREMENT OR DECREMENT WIDTH BASED ON STEP
 
-                progressBar.style.width = `${width}%`;
+        progressBar.style.width = `${width}%`;
 
-                // CHECK IF WIDTH REACHED TARGET WIDTH AND STOP INTERVAL
-                if (width <= targetWidth || width <= 0) {
-                    clearInterval(progressInterval);
-                    clearTimeout(autoCloseTimeout);
-                    width = targetWidth; // SET EXACT TARGET WIDTH TO AVOID OVERFLOW
-                }
-
-                // IF WIDTH REACHES 0, STOP INTERVAL AND CLOSE TOAST
-                if (width <= 0) {
-                    clearInterval(progressInterval);
-                    resetToast(newToast);
-                }
-            }, autoClose / 100);
+        // CHECK IF WIDTH REACHED TARGET WIDTH AND STOP INTERVAL
+        if (width <= targetWidth || width <= 0) {
+          clearInterval(progressInterval);
+          clearTimeout(autoCloseTimeout);
+          width = targetWidth; // SET EXACT TARGET WIDTH TO AVOID OVERFLOW
         }
-    }
 
-    // FUNCTION TO STOP AUTO-CLOSE AND PAUSE PROGRESS BAR
-    function stopAutoClose() {
-        clearTimeout(autoCloseTimeout); // CLEAR AUTO-CLOSE TIMEOUT
-        remainingTime -= Date.now() - startTime; // UPDATE REMAINING TIME BASED ON TIME PASSED
-        clearInterval(progressInterval); // CLEAR PROGRESS INTERVAL
-    }
-
-    // HIDE PROGRESS BAR IF hideProgressBar IS TRUE
-    if (hideProgressBar) {
-        progressBar.style.display = "none";
-    }
-
-    // IF autoClose IS NOT 'none', START AUTO-CLOSE FUNCTION
-    if (autoClose !== "none") {
-        startAutoClose();
-    }
-
-    // PAUSE ON HOVER FEATURE
-    if (pauseOnHover && autoClose !== "none") {
-        newToast.addEventListener("mouseenter", stopAutoClose); // PAUSE ON MOUSE ENTER
-        newToast.addEventListener("mouseleave", () => {
-            startAutoClose(); // RESUME ON MOUSE LEAVE
-        });
-    }
-
-    // APPLY THEME TO TOAST
-    setToastTheme(newToast, theme, color);
-
-    // MAKE TOAST ACTIVE TO TRIGGER ANIMATION
-    newToast.classList.add("active");
-
-    // FUNCTION TO RESET TOAST BY REMOVING IT FROM THE DOM
-    function resetToast(toastElement) {
-        const {
-            exit
-        } = getAnimationClasses(transition, position);
-        toastElement.classList.replace(toastElement.classList.item(3), exit); // Replace entry with exit animation
-        setTimeout(() => toastElement.remove(), 300); // REMOVE ELEMENT AFTER TRANSITION
-        toastElement.classList.remove("active");
-    }
-
-    // FUNCTION TO APPLY SELECTED THEME TO THE TOAST
-    function setToastTheme(toast, theme, color) {
-        switch (theme) {
-            case "dark":
-                toast.style.setProperty("--toast-bg-color", "#333");
-                toast.style.setProperty("--toast-font-color", "#fff");
-                toast.style.setProperty("--icon-color", color);
-                toast.style.setProperty("--progress-color", color);
-                break;
-            case "colored":
-                toast.style.setProperty("--toast-bg-color", color);
-                toast.style.setProperty("--toast-font-color", "#fff");
-                toast.style.setProperty("--icon-color", "#fff");
-                toast.style.setProperty("--progress-color", "#fff");
-                break;
-            default:
-                toast.style.setProperty("--toast-bg-color", "#fff");
-                toast.style.setProperty("--toast-font-color", "#666666");
-                toast.style.setProperty("--icon-color", color);
-                toast.style.setProperty("--progress-color", color);
-                break;
+        // IF WIDTH REACHES 0, STOP INTERVAL AND CLOSE TOAST
+        if (width <= 0) {
+          clearInterval(progressInterval);
+          resetToast(newToast);
         }
+      }, autoClose / 100);
     }
+  }
+
+  // FUNCTION TO STOP AUTO-CLOSE AND PAUSE PROGRESS BAR
+  function stopAutoClose() {
+    clearTimeout(autoCloseTimeout); // CLEAR AUTO-CLOSE TIMEOUT
+    remainingTime -= Date.now() - startTime; // UPDATE REMAINING TIME BASED ON TIME PASSED
+    clearInterval(progressInterval); // CLEAR PROGRESS INTERVAL
+  }
+
+  // HIDE PROGRESS BAR IF hideProgressBar IS TRUE
+  if (hideProgressBar) {
+    progressBar.style.display = "none";
+  }
+
+  // IF autoClose IS NOT 'none', START AUTO-CLOSE FUNCTION
+  if (autoClose !== "none") {
+    startAutoClose();
+  }
+
+  // PAUSE ON HOVER FEATURE
+  if (pauseOnHover && autoClose !== "none") {
+    newToast.addEventListener("mouseenter", stopAutoClose); // PAUSE ON MOUSE ENTER
+    newToast.addEventListener("mouseleave", () => {
+      startAutoClose(); // RESUME ON MOUSE LEAVE
+    });
+  }
+
+  // APPLY THEME TO TOAST
+  setToastTheme(newToast, theme, color);
+
+  // MAKE TOAST ACTIVE TO TRIGGER ANIMATION
+  newToast.classList.add("active");
+
+  // FUNCTION TO RESET TOAST BY REMOVING IT FROM THE DOM
+  function resetToast(toastElement) {
+    const {
+      exit
+    } = getAnimationClasses(transition, position);
+    toastElement.classList.replace(toastElement.classList.item(3), exit); // Replace entry with exit animation
+    setTimeout(() => toastElement.remove(), 300); // REMOVE ELEMENT AFTER TRANSITION
+    toastElement.classList.remove("active");
+  }
+
+  // FUNCTION TO APPLY SELECTED THEME TO THE TOAST
+  function setToastTheme(toast, theme, color) {
+    switch (theme) {
+      case "dark":
+        toast.style.setProperty("--toast-bg-color", "#333");
+        toast.style.setProperty("--toast-font-color", "#fff");
+        toast.style.setProperty("--icon-color", color);
+        toast.style.setProperty("--progress-color", color);
+        break;
+      case "colored":
+        toast.style.setProperty("--toast-bg-color", color);
+        toast.style.setProperty("--toast-font-color", "#fff");
+        toast.style.setProperty("--icon-color", "#fff");
+        toast.style.setProperty("--progress-color", "#fff");
+        break;
+      default:
+        toast.style.setProperty("--toast-bg-color", "#fff");
+        toast.style.setProperty("--toast-font-color", "#666666");
+        toast.style.setProperty("--icon-color", color);
+        toast.style.setProperty("--progress-color", color);
+        break;
+    }
+  }
 }
