@@ -126,9 +126,19 @@
   }
 
   /* Checkbox styling */
+  .checkbox-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 18px;
+  }
 
-  .checkbox-label {
-    display: inline-block;
+  .checkbox{
+    margin-right: 15px;
+  }
+  .checkbox-label {    
+    width: 72rem;
+    text-align: left;
     font-weight: 500;
     color: #555;
     vertical-align: middle;
@@ -142,11 +152,11 @@
   .form-group input[type="checkbox"] {
     margin-top: -2px; /* Adjust this if needed to align the checkbox perfectly */
     vertical-align: middle;
-    accent-color: #667eea;
+    accent-color: #764ba2;
   }
 
   .dark-theme .form-group input[type="checkbox"] {
-    accent-color: #ffd700;
+    accent-color: #764ba2;
   }
 
   button {
