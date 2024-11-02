@@ -8,148 +8,130 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="body">
+    <div class="body dark-theme">
+      <div class="theme-toggle" onclick="toggleTheme()">
+        <span class="icon">🌞</span>
+      </div>
+      <div class="form-container">
+        <h1>Toast Notification Customizer</h1>
 
-    <div class="theme-toggle" onclick="toggleTheme()">
-      <span class="icon">🌞</span>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <input type="text" id="message" placeholder="Enter toast message" />
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type:</label>
+          <select id="type">
+            <option value="success">Success</option>
+            <option value="error">Error</option>
+            <option value="info">Info</option>
+            <option value="warn">Warn</option>
+            <option value="none">None</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="theme">Theme:</label>
+          <select id="theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="colored">Colored</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="position">Position:</label>
+          <select id="position">
+            <option value="top-right">Top Right</option>
+            <option value="top-left">Top Left</option>
+            <option value="top-center">Top Center</option>
+            <option value="bottom-right">Bottom Right</option>
+            <option value="bottom-left">Bottom Left</option>
+            <option value="bottom-center">Bottom Center</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="autoClose">Auto Close (ms):</label>
+          <input
+            type="text"
+            id="autoClose"
+            value="5000"
+            placeholder="Enter time in ms"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="transition">Animation:</label>
+          <select id="transition">
+            <option value="zoom">Zoom</option>
+            <option value="flip">Flip</option>
+            <option value="slide">Slide</option>
+            <option value="bounce">Bounce</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="icon">Custom Icon (HTML):</label>
+          <input
+            type="text"
+            id="icon"
+            placeholder='(e.g. <i class="fa-duotone fa-solid fa-question"></i>)'
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="color">Custom Color:</label>
+          <input
+            type="text"
+            id="color"
+            placeholder="Enter color code (e.g., #ff0000)"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="progressPercent">Progress Percent:</label>
+          <input
+            type="number"
+            id="progressPercent"
+            value="100"
+            min="0"
+            max="100"
+            placeholder="Enter progress percent"
+          />
+        </div>
+
+        <!-- HTML for Checkboxes with container class added -->
+        <div class="form-group">
+          <label>More Options:</label>
+          <div class="checkbox-container">
+            <label for="hideProgressBar" class="checkbox-label">Hide Progress Bar</label>
+            <input type="checkbox" class="checkbox" id="hideProgressBar" />
+            <label for="closeAble" class="checkbox-label">Closable</label>
+            <input type="checkbox" class="checkbox" id="closeAble" checked />
+          </div>
+
+          <div class="checkbox-container">
+            <label for="closeOnClick" class="checkbox-label">Close on Click</label>
+            <input type="checkbox" class="checkbox" id="closeOnClick" />
+            <label for="pauseOnHover" class="checkbox-label">Pause on Hover</label>
+            <input type="checkbox" class="checkbox" id="pauseOnHover" checked />
+          </div>
+        </div>
+        <button type="button" id="showToastButton">Show Toast</button>
+
+      </div>
     </div>
-    <div class="form-container">
-      <h1>Toast Notification Customizer</h1>
-
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <input type="text" id="message" placeholder="Enter toast message" />
-      </div>
-
-      <div class="form-group">
-        <label for="type">Type:</label>
-        <select id="type">
-          <option value="none">None</option>
-          <option value="success">Success</option>
-          <option value="error">Error</option>
-          <option value="info">Info</option>
-          <option value="warn">Warn</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="theme">Theme:</label>
-        <select id="theme">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="colored">Colored</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="position">Position:</label>
-        <select id="position">
-          <option value="top-right">Top Right</option>
-          <option value="top-left">Top Left</option>
-          <option value="bottom-right">Bottom Right</option>
-          <option value="bottom-left">Bottom Left</option>
-          <option value="top-center">Top Center</option>
-          <option value="bottom-center">Bottom Center</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="autoClose">Auto Close (ms):</label>
-        <input
-          type="number"
-          id="autoClose"
-          value="5000"
-          placeholder="Enter time in ms"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="transition">Animation:</label>
-        <select id="transition">
-          <option value="zoom">Zoom</option>
-          <option value="flip">Flip</option>
-          <option value="slide">Slide</option>
-          <option value="bounce">Bounce</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="icon">Custom Icon (HTML):</label>
-        <input
-          type="text"
-          id="icon"
-          placeholder="<i class=\'fa-solid fa-hourglass-end\'></i>"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="color">Custom Color:</label>
-        <input
-          type="text"
-          id="color"
-          placeholder="Enter color code (e.g., #ff0000)"
-        />
-      </div>
-
-      <div class="form-group">
-        <label for="progressPercent">Progress Percent:</label>
-        <input
-          type="number"
-          id="progressPercent"
-          value="100"
-          min="0"
-          max="100"
-          placeholder="Enter progress percent"
-        />
-      </div>
-
-      <!-- HTML for Checkboxes with container class added -->
-      <div class="form-group">
-        <div class="checkbox-container">
-          <input type="checkbox" id="hideProgressBar" />
-          <label for="hideProgressBar" class="checkbox-label"
-            >Hide Progress Bar</label
-          >
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="checkbox-container">
-          <input type="checkbox" id="closeAble" checked />
-          <label for="closeAble" class="checkbox-label">Closable</label>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="checkbox-container">
-          <input type="checkbox" id="closeOnClick" />
-          <label for="closeOnClick" class="checkbox-label"
-            >Close on Click</label
-          >
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="checkbox-container">
-          <input type="checkbox" id="pauseOnHover" checked />
-          <label for="pauseOnHover" class="checkbox-label"
-            >Pause on Hover</label
-          >
-        </div>
-      </div>
-
-      <button type="button" id="showToastButton">Show Toast</button>
-    </div>
-      
-  </div>
     <script>
       // Theme toggle function
       function toggleTheme() {
-        const icon = document.querySelector(".theme-toggle .icon");
         const body = document.querySelector(".body");
+        const icon = document.querySelector(".theme-toggle .icon");
 
         if (body.classList.contains("dark-theme")) {
           body.classList.remove("dark-theme");
@@ -168,10 +150,9 @@
         const newType = document.getElementById("type").value;
         const newTheme = document.getElementById("theme").value;
         const newPosition = document.getElementById("position").value;
-        const newAutoClose = parseInt(
-          document.getElementById("autoClose").value,
-          10
-        );
+        const autoCloseInput = document.getElementById("autoClose").value;
+        const newAutoClose =
+          autoCloseInput === "none" ? "none" : parseInt(autoCloseInput, 10);
         const newTransition = document.getElementById("transition").value;
         const newIcon = document.getElementById("icon").value;
         const newColor = document.getElementById("color").value;
@@ -202,7 +183,8 @@
         });
       });
     </script>
-
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <script src="toastify.js"></script>
   </body>
 </html>
