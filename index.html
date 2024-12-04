@@ -236,6 +236,20 @@
           copyButton.innerText = "Copy";
         }, 2000);
       });
+
+      let titleText =
+      "Toastify Playground || Make your toast easily || Developed by NOSIB BISWAS || ";
+      let index = 0;
+      
+      // Function to scroll the title smoothly
+      function scrollTitle() {
+        document.title =
+          titleText.substring(index) + titleText.substring(0, index);
+        index = (index + 1) % titleText.length;
+        requestAnimationFrame(() => setTimeout(scrollTitle, 180)); // Adjust time for smoothness
+      }
+      
+      scrollTitle();
     </script>
   </body>
 </html>
