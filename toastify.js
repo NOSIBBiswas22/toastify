@@ -1,12 +1,50 @@
+function loadResource(type, attributes) {
+  const element = document.createElement(type);
+  Object.keys(attributes).forEach((key) => {
+    element[key] = attributes[key];
+  });
+  document.head.appendChild(element);
+}
+
+// Load all resources
+const resources = [
+  // Stylesheets
+  {
+    type: "link",
+    attributes: {
+      rel: "stylesheet",
+      href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css",
+    },
+  },
+  {
+    type: "link",
+    attributes: {
+      rel: "stylesheet",
+      href: "https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css",
+    },
+  },
+
+  // Scripts
+  {
+    type: "script",
+    attributes: { src: "https://cdn.lordicon.com/lordicon.js" },
+  },
+  {
+    type: "script",
+    attributes: {
+      src: "https://unpkg.com/boxicons@2.1.4/dist/boxicons.js",
+    },
+  },
+];
+
+// Dynamically load each resource
+resources.forEach((resource) =>
+  loadResource(resource.type, resource.attributes)
+);
+
 function addToastStyles() {
   if (!document.getElementById("toastStyles")) {
-    const toastStyles = `
-        /Font-awesome Import/
-        @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
-
-        /* Google Font Import */
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
-  
+    const toastStyles = `  
         :root {
           --toast-bg-color: #fff;
           --toast-font-color: #666666;
@@ -531,35 +569,43 @@ function showToast({
   message,
   theme = "light",
   progressPercent = 100,
+  font
 }) {
   // ICON TYPES FOR DIFFERENT TOAST TYPES
   const iconTypes = {
+    none: '<i class="fa-solid fa-circle-info"></i>',
     success: '<i class="fa-solid fa-circle-check"></i>',
     error: '<i class="fa-solid fa-circle-exclamation"></i>',
     info: '<i class="fa-solid fa-circle-info"></i>',
     warn: '<i class="fa-solid fa-triangle-exclamation"></i>',
+    promise: '<i class="fa-solid fa-spinner fa-spin"></i>'
   };
 
   // DEFAULT MESSAGES FOR DIFFERENT TOAST TYPES
   const messageTypes = {
+    none: "This is a Toast.",
     success: "Successfully completed!",
     error: "Something went wrong!",
     info: "Here is some information for you.",
     warn: "Please be cautious!",
+    promise: "Loading..."
   };
 
   // SET DEFAULT ICON, COLOR, AND MESSAGE IF NOT PROVIDED
   if (!icon)
-    icon = iconTypes[type] || '<i class="fa-solid fa-circle-info"></i>';
+    icon = iconTypes[type];
   if (!color)
     color =
-    type === "success" ? "#07bc0c" :
-    type === "error" ? "#f44" :
-    type === "info" ? "#4070f4" :
-    "#f90";
-  if (!message)
-    message = messageTypes[type] || "This is a notification.";
-
+      type === "promise"
+        ? "#555"
+        : type === "success"
+        ? "#07bc0c"
+        : type === "error"
+        ? "#f44"
+        : type === "info"
+        ? "#4070f4"
+        : "#f90";
+  if (!message) message = messageTypes[type];
 
   // FUNCTION TO GET ENTRY AND EXIT ANIMATION CLASSES
   function getAnimationClasses(transition, position) {
@@ -567,24 +613,24 @@ function showToast({
     const animationMapping = {
       zoom: {
         entry: "zoom",
-        exit: "zoom-close"
+        exit: "zoom-close",
       },
       flip: {
         entry: "flip",
-        exit: "flip-close"
+        exit: "flip-close",
       },
       slide: {
         "top-left": {
           entry: "slide-left",
-          exit: "slide-left-close"
+          exit: "slide-left-close",
         },
         "top-right": {
           entry: "slide-right",
-          exit: "slide-right-close"
+          exit: "slide-right-close",
         },
         "bottom-left": {
           entry: "slide-left",
-          exit: "slide-left-close"
+          exit: "slide-left-close",
         },
         "bottom-right": {
           entry: "slide-right",
@@ -592,7 +638,7 @@ function showToast({
         },
         "top-center": {
           entry: "slide-top",
-          exit: "slide-top-close"
+          exit: "slide-top-close",
         },
         "bottom-center": {
           entry: "slide-bottom",
@@ -602,7 +648,7 @@ function showToast({
       bounce: {
         "top-left": {
           entry: "bounce-left",
-          exit: "bounce-left-close"
+          exit: "bounce-left-close",
         },
         "top-right": {
           entry: "bounce-right",
@@ -618,7 +664,7 @@ function showToast({
         },
         "top-center": {
           entry: "bounce-top",
-          exit: "bounce-top-close"
+          exit: "bounce-top-close",
         },
         "bottom-center": {
           entry: "bounce-bottom",
@@ -643,15 +689,23 @@ function showToast({
     // Default to zoom if transition or position not found
     return {
       entry: "zoom",
-      exit: "zoom-close"
+      exit: "zoom-close",
     };
+  }
+
+  // Function to generate a unique 8-character ID
+  function generateUniqueId() {
+    return Math.random().toString(36).substring(2, 10); // Generates a random string of 8 characters
   }
 
   // CREATE THE TOAST ELEMENT
   const newToast = document.createElement("div");
-  const {
-    entry
-  } = getAnimationClasses(transition, position);
+  newToast.style.fontFamily = font;
+  const { entry } = getAnimationClasses(transition, position);
+
+  // Generate a unique ID for the toast
+  const uniqueId = generateUniqueId();
+  newToast.id = `toast-${uniqueId}`; // Set the ID with a prefix for clarity
 
   newToast.classList.add("toast", position, entry);
   newToast.innerHTML = `
@@ -699,10 +753,7 @@ function showToast({
   function startAutoClose() {
     startTime = Date.now(); // RESET START TIME
     if (width <= targetWidth || width <= 0) return;
-    autoCloseTimeout = setTimeout(
-      () => resetToast(newToast),
-      remainingTime
-    ); // SET AUTO-CLOSE TIMEOUT
+    autoCloseTimeout = setTimeout(() => resetToast(newToast), remainingTime); // SET AUTO-CLOSE TIMEOUT
 
     // IF PROGRESS BAR IS ENABLED, SET UP INTERVAL TO UPDATE WIDTH
     if (!hideProgressBar) {
@@ -763,9 +814,7 @@ function showToast({
 
   // FUNCTION TO RESET TOAST BY REMOVING IT FROM THE DOM
   function resetToast(toastElement) {
-    const {
-      exit
-    } = getAnimationClasses(transition, position);
+    const { exit } = getAnimationClasses(transition, position);
     toastElement.classList.replace(toastElement.classList.item(3), exit); // Replace entry with exit animation
     setTimeout(() => toastElement.remove(), 300); // REMOVE ELEMENT AFTER TRANSITION
     toastElement.classList.remove("active");
@@ -795,3 +844,40 @@ function showToast({
     }
   }
 }
+
+["none", "success", "error", "info", "warn", "promise"].forEach((type) => {
+  showToast[type] = function ({
+    position,
+    autoClose,
+    hideProgressBar,
+    transition,
+    closeAble,
+    closeOnClick,
+    pauseOnHover,
+    icon,
+    color,
+    message,
+    theme,
+    progressPercent,
+    font,
+    promise,
+  }) {
+    showToast({
+      type,
+      position,
+      autoClose,
+      hideProgressBar,
+      transition,
+      closeAble,
+      closeOnClick,
+      pauseOnHover,
+      icon,
+      color,
+      message,
+      theme,
+      progressPercent,
+      font,
+      promise,
+    });
+  };
+});
