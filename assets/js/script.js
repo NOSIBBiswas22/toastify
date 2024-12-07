@@ -134,38 +134,3 @@ function scrollTitle() {
 }
 
 scrollTitle();
-
-
-
-
-// Example promise
-const examplePromise = (() => {
-  let toggle = true; // Start with `true`
-
-  return () =>
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        toggle ? resolve(true) : reject(false);
-        toggle = !toggle; // Flip the toggle
-      }, 5000); // Delay for better visualization
-    });
-})();
-
-const promiseButton = document.getElementById("showPromiseButton");
-promiseButton.addEventListener("click", () => {
-  showToast.promise({
-    theme: "light",
-    position: "top-right",
-    transition: "zoom",
-    autoClose: 5000,
-    hideProgressBar: false,
-    pauseOnHover: true,
-    closeAble: true,
-    closeOnClick: false,
-    icon: `<i class="fa-solid fa-spinner fa-spin"></i>`,
-    color: "",
-    font: ``,
-    message: "Loading...",
-    progressPercent: 100
-});
-});
