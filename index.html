@@ -4,7 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Toastify  Playground || Developed by NOSIB BISWAS </title>
+    <title>Toastify Playground || Developed by NOSIB BISWAS</title>
+    <link rel="shortcut icon" href="assets/toastify.jpeg" type="image/x-icon" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -13,7 +14,7 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
     <div class="mainContainer">
@@ -108,6 +109,14 @@
               placeholder="Enter progress percent"
             />
           </div>
+          <div class="form-group">
+            <label for="color">Font:</label>
+            <input
+              type="text"
+              id="font"
+              placeholder='Enter font code (e.g., "Doto", sans-serif)'
+            />
+          </div>
           <div class="form-group options">
             <label for="options">More Options:</label>
             <div class="optionContainer">
@@ -118,15 +127,15 @@
                 >
               </div>
               <div class="checkbox-container">
-                <label for="pauseOnHover" class="checkbox-label"
-                  >Pause on Hover</label
-                >
                 <input
                   type="checkbox"
                   class="checkbox"
                   id="pauseOnHover"
                   checked
                 />
+                <label for="pauseOnHover" class="checkbox-label"
+                  >Pause on Hover</label
+                >
               </div>
             </div>
             <div class="optionContainer">
@@ -137,13 +146,13 @@
                 >
               </div>
               <div class="checkbox-container">
-                <label for="closeAble" class="checkbox-label">Closable</label>
                 <input
                   type="checkbox"
                   class="checkbox"
                   id="closeAble"
                   checked
                 />
+                <label for="closeAble" class="checkbox-label">Closable</label>
               </div>
             </div>
           </div>
@@ -151,105 +160,15 @@
         <div class="buttonContainer">
           <button type="button" id="showToastButton">Show Toast</button>
         </div>
+        <div class="buttonContainer">
+          <button type="button" id="showPromiseButton">Show Promise</button>
+        </div>
       </div>
     </div>
-    <script src="toastify.js"></script>
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-
-    <script>
-      const inputs = document.querySelectorAll(
-        "#message, #type, #theme, #position, #autoClose, #transition, #icon, #color, #progressPercent, #hideProgressBar, #closeAble, #closeOnClick, #pauseOnHover"
-      );
-      const generatedCodeElement = document.getElementById("generatedCode");
-      const copyButton = document.getElementById("copyCodeButton");
-      const showButton = document.getElementById("showToastButton");
-
-      function generateToastCode(options) {
-        return `
-    <span class="keyword">showToast</span>({
-      <span class="property">type</span>: "<span class="string">${options.type}</span>",
-      <span class="property">theme</span>: "<span class="string">${options.theme}</span>",
-      <span class="property">position</span>: "<span class="string">${options.position}</span>",
-      <span class="property">transition</span>: "<span class="string">${options.transition}</span>",
-      <span class="property">autoClose</span>: <span class="number">${options.autoClose}</span>,
-      <span class="property">hideProgressBar</span>: <span class="keyword">${options.hideProgressBar}</span>,
-      <span class="property">pauseOnHover</span>: <span class="keyword">${options.pauseOnHover}</span>,
-      <span class="property">closeAble</span>: <span class="keyword">${options.closeAble}</span>,
-      <span class="property">closeOnClick</span>: <span class="keyword">${options.closeOnClick}</span>,
-      <span class="property">icon</span>: \`<span class="string">${options.icon}</span>\`,
-      <span class="property">color</span>: "<span class="string">${options.color}</span>",
-      <span class="property">message</span>: "<span class="string">${options.message}</span>",
-      <span class="property">progressPercent</span>: <span class="number">${options.progressPercent}</span>
-    });`;
-      }
-
-      function updateGeneratedCode() {
-        const options = {
-          type: document.getElementById("type").value,
-          theme: document.getElementById("theme").value,
-          position: document.getElementById("position").value,
-          autoClose:
-            document.getElementById("autoClose").value === "none"
-              ? "none"
-              : parseInt(document.getElementById("autoClose").value, 10) ||
-                5000,
-          hideProgressBar: document.getElementById("hideProgressBar").checked,
-          transition: document.getElementById("transition").value,
-          closeAble: document.getElementById("closeAble").checked,
-          closeOnClick: document.getElementById("closeOnClick").checked,
-          pauseOnHover: document.getElementById("pauseOnHover").checked,
-          icon: document.getElementById("icon").value || "",
-          color: document.getElementById("color").value || "",
-          message:
-            document.getElementById("message").value ||
-            "Successfully completed!",
-          progressPercent:
-            parseInt(document.getElementById("progressPercent").value, 10) ||
-            100,
-        };
-
-        generatedCodeElement.innerHTML = generateToastCode(options).trim();
-        return options;
-      }
-
-      inputs.forEach((input) => {
-        input.addEventListener("input", updateGeneratedCode);
-      });
-
-      updateGeneratedCode();
-
-      showButton.addEventListener("click", () => {
-        showToast(updateGeneratedCode());
-      });
-
-      copyButton.addEventListener("click", () => {
-        const tempElement = document.createElement("textarea");
-        tempElement.value = generatedCodeElement.innerText;
-        document.body.appendChild(tempElement);
-        tempElement.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempElement);
-
-        copyButton.innerText = "Copied!";
-        setTimeout(() => {
-          copyButton.innerText = "Copy";
-        }, 2000);
-      });
-
-      let titleText =
-      "Toastify Playground || Make your toast easily || Developed by NOSIB BISWAS || ";
-      let index = 0;
-      
-      // Function to scroll the title smoothly
-      function scrollTitle() {
-        document.title =
-          titleText.substring(index) + titleText.substring(0, index);
-        index = (index + 1) % titleText.length;
-        requestAnimationFrame(() => setTimeout(scrollTitle, 180)); // Adjust time for smoothness
-      }
-      
-      scrollTitle();
-    </script>
+    <!-- <script src="https://nosibbiswas22.github.io/toastify/toastify.js"></script> -->
+    <script src="assets/js/toastify.js"></script>
+    <script src="assets/js/script.js"></script>
   </body>
 </html>
