@@ -246,6 +246,10 @@ code {
   color: #ff79c6;
 }
 
+.type{
+  color: #ff1493;
+}
+
 .keyword {
   color: #8be9fd;
 }
